@@ -51,13 +51,23 @@ class AliyunSMS():
             TemplateCode=template_code,
         )
 
-    def _generate_signature(self):
-        pass
+    def generate_signature(self, params=None, method='GET', url='/'):
+        '''
+        Generate Signature for requests
+        @params: Parameters dict, self._sms_params for default
+        @method: HTTP Method, GET default
+        @url: url endpoint, / default
+        %signature
+        '''
+        params = params if params else self._sms_params
+        secret = self._config.get('access_key_secret') + '&' #Must add & to the end
+        querystring = quote(urlencode(params))
+        return hmacb64('&'.join([method, quote(url, safe=''), querystring]), secret)
 
     def _sort_params(self, dic):
         return OrderedDict(sorted(dic.items(), key=lambda x: x[0]))
-
-    def send_sms(self, phone_numbers, sign_name, template_code, template_params=None, **kwargs):
+        
+    def send_sms(self, phone_numbers, sign_name, template_code, template_params=None, raw=True, **kwargs):
         url = '/'
         method = 'GET'
         '''
@@ -70,14 +80,12 @@ class AliyunSMS():
         '''
         self._form_params(phone_numbers, sign_name, template_code, template_params, **kwargs)
         self._sms_params = self._sort_params(self._sms_params) 
-        querystring = quote(urlencode(self._sms_params))
-        signature_string = '&'.join([method, quote(url, safe=''), querystring])
-        secret = self._config.get('access_key_secret') + '&' #Must add & to the end
-        signature = hmacb64(signature_string, secret)
+        signature = self.generate_signature()
         self._sms_params['Signature'] = signature
         self._sms_params.move_to_end('Signature', last=False) #Move this param to the top
         final_url = self._config.get('host') + '?' + '&'.join(['{}={}'.format(key, quote(val, safe='')) for key, val in self._sms_params.items()])
-        return requests.get(url=final_url)
+        if raw:
+            return requests.get(url=final_url)
 
 if __name__ == '__main__':
     a = AliyunSMS(access_key_id='testId', access_key_secret='testSecret', region_id='cn-hangzhou')
