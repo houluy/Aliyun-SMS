@@ -1,4 +1,0 @@
-SMS_params:
-    host: 'http://dysmsapi.aliyuncs.com'
-    access_key_id: 'testId'
-    access_key_secret: 'testSecret'
