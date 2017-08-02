@@ -38,6 +38,17 @@ This function is used to send SMS via Aliyun API.
 &emsp; * template\_params: The params that need to be used in template  
 &emsp; * raw: If to return the original `requests` instance  
 &emsp; % Status: success or failure  
+    
+    AliyunSMS.query_details(phone_number, serial_number='', send_date='', page_size='10', current_page='1', raw=True, **kwargs)
+
+This function is used to query sending histories specified by `phone_number` and `send_date`.  
+&emsp; * phone\_number: Only one phone number  
+&emsp; * serial\_number: Serial number of a SMS message, can be received from return of `send_sms`  
+&emsp; * send\_date: Search date, less than 30 days, form: "20170801"  
+&emsp; * page\_size: Paging, max 50 items a page  
+&emsp; * current\_page: Current page  
+&emsp; * raw: If to return the original `requests` instance  
+&emsp; % Details  
 
 ## AliyunSMS Attributes  
     AliyunSMS.sms_params
