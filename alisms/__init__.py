@@ -3,6 +3,7 @@ import uuid
 import time
 from urllib.parse import quote, urlencode
 import requests
+import json
 
 from .utils import hmacb64, parse_config
 
@@ -18,6 +19,7 @@ class AliyunSMS():
                 'region_id': region_id,
                 'host': host,
             }
+        self._form_sys_params()
 
     @property
     def sms_params(self):
@@ -32,25 +34,27 @@ class AliyunSMS():
 
     def _gen_utc_time(self):
         return time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime(time.time()))
-
-    def _form_params(self, phone_numbers, sign_name, template_code, template_params=None, **kwargs):
+    
+    def _form_sys_params(self):
         self._sms_params = dict(
             SignatureMethod='HMAC-SHA1',
             SignatureNonce=str(uuid.uuid4()),
             AccessKeyId=self._config.get('access_key_id'),
             Timestamp=self._gen_utc_time(),
             SignatureVersion='1.0',
-            Format='JSON',
-            OutId='123',
-            Action='SendSms',
-            Version='2017-05-25',
-            RegionId=self._config.get('region_id'),
-            PhoneNumbers=phone_numbers,
-            SignName=sign_name,
-            TemplateParam=template_params,
-            TemplateCode=template_code,
+            Format='JSON'
         )
 
+    def _form_bus_params(self, business, **kwargs):
+        self._sms_params.update(dict(
+            Action=business,
+            Version='2017-05-25',
+            RegionId=self._config.get('region_id'),
+        ))
+        self._sms_params.update(kwargs)
+        if not kwargs.get('BizId', None) and business == 'QuerySendDetails':#Optional Params
+            self._sms_params.pop('BizId')
+                
     def generate_signature(self, params=None, method='GET', url='/'):
         '''
         Generate Signature for requests
@@ -66,10 +70,18 @@ class AliyunSMS():
 
     def _sort_params(self, dic):
         return OrderedDict(sorted(dic.items(), key=lambda x: x[0]))
+
+    def _send_req(self, url, method='GET'):
+        self._sms_params = self._sort_params(self._sms_params) 
+        signature = self.generate_signature()
+        self._sms_params['Signature'] = signature
+        self._sms_params.move_to_end('Signature', last=False) #Move this param to the top
+        if (url == '/'):
+            url = ''
+        final_url = self._config.get('host') + '?' + '&'.join(['{}={}'.format(key, quote(val, safe='')) for key, val in self._sms_params.items()])
+        return requests.get(url=final_url)
         
     def send_sms(self, phone_numbers, sign_name, template_code, template_params=None, raw=True, **kwargs):
-        url = '/'
-        method = 'GET'
         '''
         Send SMS message via Aliyun API
         @phone_numbers: The list of phone numbers, can be a string if only one number
@@ -78,14 +90,28 @@ class AliyunSMS():
         @template_params: The params that need to be used in template
         %Status: success or failure
         '''
-        self._form_params(phone_numbers, sign_name, template_code, template_params, **kwargs)
-        self._sms_params = self._sort_params(self._sms_params) 
-        signature = self.generate_signature()
-        self._sms_params['Signature'] = signature
-        self._sms_params.move_to_end('Signature', last=False) #Move this param to the top
-        final_url = self._config.get('host') + '?' + '&'.join(['{}={}'.format(key, quote(val, safe='')) for key, val in self._sms_params.items()])
+        url = '/'
+        method = 'GET'
+        template_params = json.dumps(template_params, separators=(',', ':')) #Must not have whitespace
+        self._form_bus_params(business='SendSms', PhoneNumbers=phone_numbers, SignName=sign_name, TemplateCode=template_code, TemplateParam=template_params, **kwargs)
         if raw:
-            return requests.get(url=final_url)
-
-if __name__ == '__main__':
-    a = AliyunSMS(access_key_id='testId', access_key_secret='testSecret', region_id='cn-hangzhou')
+            return self._send_req(url=url)
+        
+    def query_details(self, phone_number, serial_number='', send_date='', page_size='10', current_page='1', raw=True, **kwargs):
+        '''
+        Query the details of SMS service
+        @phone_number: One phone number
+        @serial_number(optional): Serial number from send_sms API
+        @send_date: Query date, less than 30 days
+        @page_size: Paging, less than 50 items
+        @current_page: Current page, from 1
+        %Details
+        '''
+        url='/'
+        method='GET'
+        self._form_bus_params(business='QuerySendDetails', PhoneNumber=phone_number, BizId=serial_number, SendDate=send_date, PageSize=page_size, CurrentPage=current_page)
+        if raw:
+            return self._send_req(url=url)
+        else:
+            res = self._send_req(url=url)
+            return res.json()

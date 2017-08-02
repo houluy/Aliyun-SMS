@@ -7,7 +7,7 @@ here = path.abspath(path.dirname(__file__))
 
 setup(
     name='alisms',
-    version='1.0.8',
+    version='1.1.0',
     description='A SDK for Aliyun SMS services in Python3',
     url='https://github.com/houluy/Aliyun-SMS',
     author='Houlu',
