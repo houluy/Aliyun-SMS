@@ -14,7 +14,6 @@ Please refer to [document](http://aliyun-sms-api.readthedocs.io) to read the ful
 ## Tutorial
 Here is a quick example of sending SMS messages for a phone user:  
 
-    :::python
     import alisms
 
     client = alisms.AliyunSMS(access_key_id='testId', access_key_secret='testSecret', region_id='cn-hangzhou')
