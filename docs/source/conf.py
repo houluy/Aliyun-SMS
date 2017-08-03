@@ -52,8 +52,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'Aliyun SMS SDK'
-copyright = '2017, Hou, Lu'
-author = 'Hou, Lu'
+copyright = '2017, Hou Lu'
+author = 'Hou Lu'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

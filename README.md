@@ -7,66 +7,17 @@ The `alisms` package is available on `pypi`, so use
 
 to install it.  
 
-## AliyunSMS Object
-AliyunSMS Object has the following attributes and methods  
-  
-    class aliyun_sms.AliyunSMS(config_file='', access_key_id='', access_key_secret='', region_id='', host='http://dysmsapi.aliyuncs.com')
+## Document
+Please refer to [document](http://aliyun-sms-api.readthedocs.io) to read the full docs.  
 
-Class  
-&emsp; * config\_file: Configure file name  
-&emsp; * access\_key\_id: accessKeyId of Aliyun *sub-account* (Sub account is recommended for security)  
-&emsp; * access\_key\_secret: accessKeySecret of the id (vital)   
-&emsp; * region\_id: Region name of your SMS service  
-&emsp; * host: API host, default is enough
-&emsp; % A new instance of AliyunSMS class.  
 
-## AliyunSMS Methods  
-    AliyunSMS.generate_signature(params=None, method='GET', url='/')   
+## Tutorial
+Here is a quick example of sending SMS messages for a phone user:  
 
-This function can generate signature based on the `params`, `method` and `url`. Of course access\_key\_secret is necessary!  
-&emsp; * params: A `dict` parameters for the request, `OrderedDict` is better since the sequence is of importance.  
-&emsp; * method: HTTP method for the request, default 'GET'.  
-&emsp; * url: Url endpoint of the request, default is '/' if using `send\_sms()` 
-&emsp; % The signature string  
+    import alisms
 
-    AliyunSMS.send_sms(phone_numbers, sign_name, template_code, template_params=None, raw=True, **kwargs)`   
-
-This function is used to send SMS via Aliyun API.  
-&emsp; * phone\_numbers: The list of phone numbers, can be a string if only one number  
-&emsp; * sign\_name: Sign name configured in Aliyun console  
-&emsp; * template\_code: The template code defined in Aliyun console  
-&emsp; * template\_params: The params that need to be used in template  
-&emsp; * raw: If to return the original `requests` instance  
-&emsp; % Status: success or failure  
-    
-    AliyunSMS.query_details(phone_number, serial_number='', send_date='', page_size='10', current_page='1', raw=True, **kwargs)
-
-This function is used to query sending histories specified by `phone_number` and `send_date`.  
-&emsp; * phone\_number: Only one phone number  
-&emsp; * serial\_number: Serial number of a SMS message, can be received from return of `send_sms`  
-&emsp; * send\_date: Search date, less than 30 days, form: "20170801"  
-&emsp; * page\_size: Paging, max 50 items a page  
-&emsp; * current\_page: Current page  
-&emsp; * raw: If to return the original `requests` instance  
-&emsp; % Details  
-
-## AliyunSMS Attributes  
-    AliyunSMS.sms_params
-
-This is the `dict` of parameters for SMS request. It can be get and set directly (A `dict` is mandatory)  
-
-## Useful functions
-    utils.hmac64(object_str, secret, alg='sha1')
-
-Compute the *HMAC-\{alg\}* of the `object\_str` with `secret` and get the return after `base64` encoding  
-&emsp; * object\_str: Original string that needs to be encrypted  
-&emsp; * secret: secret string  
-&emsp; * alg: HMAC algorithm, default 'sha1'  
-&emsp; % The encrypted string  
-
-    utils.parse_config(config_file, part='_all')
-
-Parse config file, a *YAML* file is mandatory  
-&emsp; * config\_file: Configure file name  
-&emsp; * part: Return part of the configures, default is *\_all*  
-&emsp; % The configures in `dict`
+    client = alisms.AliyunSMS(access_key_id='testId', access_key_secret='testSecret', region_id='cn-hangzhou')
+    template_params = {
+        'code': '123456',
+    }
+    client.send_sms(phone_numbers='13000000000', sign_name='阿里云', template_code='SMS_10000000', template_params=template_params)
