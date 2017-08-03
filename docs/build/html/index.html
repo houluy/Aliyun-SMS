@@ -1,0 +1,190 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Aliyun SMS SDK’s documentation &#8212; Aliyun SMS SDK 1.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="aliyun-sms-sdk-s-documentation">
+<h1>Aliyun SMS SDK’s documentation<a class="headerlink" href="#aliyun-sms-sdk-s-documentation" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>The <cite>alisms</cite> package is available on <cite>pypi</cite>, so use:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">alisms</span>
+</pre></div>
+</div>
+<p>to install it.</p>
+</div>
+<div class="section" id="aliyunsms-object">
+<h1>AliyunSMS Object<a class="headerlink" href="#aliyunsms-object" title="Permalink to this headline">¶</a></h1>
+<p>AliyunSMS Object has the following attributes and methods:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">aliyun_sms</span><span class="o">.</span><span class="n">AliyunSMS</span><span class="p">(</span><span class="n">config_file</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">access_key_id</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">access_key_secret</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">region_id</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;http://dysmsapi.aliyuncs.com&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><em>Class</em></p>
+<ul class="simple">
+<li><cite>config_file</cite>:        Configure file name.</li>
+<li><cite>access_key_id</cite>:      <em>accessKeyId</em> of Aliyun <em>sub-account</em> (<em>subaccount</em> is recommended for security).</li>
+<li><cite>access_key_secret</cite>:  <em>accessKeySecret</em> of the id (vital).</li>
+<li><cite>region_id</cite>:          Region name of your SMS service.</li>
+<li><cite>host</cite>:               API host, default is enough.</li>
+</ul>
+<p>% A new instance of AliyunSMS class.</p>
+</div>
+<div class="section" id="aliyunsms-public-attributes">
+<h1>AliyunSMS Public Attributes<a class="headerlink" href="#aliyunsms-public-attributes" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">AliyunSMS</span><span class="o">.</span><span class="n">sms_params</span>
+</pre></div>
+</div>
+<p>This is the <cite>dict</cite> of parameters for SMS request. It can be get and set directly (A <cite>dict</cite> is mandatory)</p>
+</div>
+<div class="section" id="aliyunsms-methods">
+<h1>AliyunSMS Methods<a class="headerlink" href="#aliyunsms-methods" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">AliyunSMS</span><span class="o">.</span><span class="n">generate_signature</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This function can generate signature based on the <cite>params</cite>, <cite>method</cite> and <cite>url</cite>. Of course <cite>access_key_secret</cite> is necessary!</p>
+<ul class="simple">
+<li><cite>params</cite>: A <cite>dict</cite> parameters for the request, <cite>OrderedDict</cite> is better since the sequence is of importance.</li>
+<li><cite>method</cite>: HTTP method for the request, default ‘GET’.</li>
+<li><cite>url</cite>:    Url endpoint of the request, default is ‘/’ if using <cite>send_sms()</cite>.</li>
+</ul>
+<p>% The signature string</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">AliyunSMS</span><span class="o">.</span><span class="n">send_sms</span><span class="p">(</span><span class="n">phone_numbers</span><span class="p">,</span> <span class="n">sign_name</span><span class="p">,</span> <span class="n">template_code</span><span class="p">,</span> <span class="n">template_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This function is used to send SMS via Aliyun API.</p>
+<ul class="simple">
+<li><cite>phone_numbers</cite>:   The list of phone numbers, can be a string if only one number</li>
+<li><cite>sign_name</cite>:       Sign name configured in Aliyun console</li>
+<li><cite>template_code</cite>:   The template code defined in Aliyun console</li>
+<li><cite>template_params</cite>: The params that need to be used in template</li>
+<li><cite>raw</cite>:             If to return the original <cite>requests</cite> instance</li>
+</ul>
+<p>% Status: success or failure</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">AliyunSMS</span><span class="o">.</span><span class="n">query_details</span><span class="p">(</span><span class="n">phone_number</span><span class="p">,</span> <span class="n">serial_number</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">send_date</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="s1">&#39;10&#39;</span><span class="p">,</span> <span class="n">current_page</span><span class="o">=</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This function is used to query sending histories specified by <cite>phone_number</cite> and <cite>send_date</cite>.</p>
+<ul class="simple">
+<li><cite>phone_number1</cite>:   Only one phone number.</li>
+<li><cite>serial_number</cite>:   Serial number of a SMS message, can be received from return of <cite>send_sms</cite>.</li>
+<li><cite>send_date</cite>:       Search date, less than 30 days, form: <cite>20170801</cite>.</li>
+<li><cite>page_size</cite>:       Paging, max 50 items a page.</li>
+<li><cite>current_page</cite>:    Current page.</li>
+<li><cite>raw</cite>:             If to return the original <cite>requests</cite> instance.</li>
+</ul>
+<p>% Details of the response</p>
+</div>
+<div class="section" id="useful-functions">
+<h1>Useful Functions<a class="headerlink" href="#useful-functions" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">utils</span><span class="o">.</span><span class="n">hmac64</span><span class="p">(</span><span class="n">object_str</span><span class="p">,</span> <span class="n">secret</span><span class="p">,</span> <span class="n">alg</span><span class="o">=</span><span class="s1">&#39;sha1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Compute the <em>HMAC-{alg}</em> of the <cite>object_str</cite> with <cite>secret</cite> and get the return after <cite>base64</cite> encoding</p>
+<ul class="simple">
+<li><cite>object_str</cite>: Original string that needs to be encrypted.</li>
+<li><cite>secret</cite>:     secret string.</li>
+<li><cite>alg</cite>:        HMAC algorithm, default <cite>sha1</cite>.</li>
+</ul>
+<p>% The encrypted string</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">utils</span><span class="o">.</span><span class="n">parse_config</span><span class="p">(</span><span class="n">config_file</span><span class="p">,</span> <span class="n">part</span><span class="o">=</span><span class="s1">&#39;_all&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Parse config file, a <em>YAML</em> file is mandatory</p>
+<ul class="simple">
+<li><cite>config_file</cite>: Configure file name.</li>
+<li><cite>part</cite>:        Return part of the configures, default is <cite>_all</cite>.</li>
+</ul>
+<p>% The configures in <cite>dict</cite></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Aliyun SMS SDK</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Hou, Lu.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
