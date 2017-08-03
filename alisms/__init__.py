@@ -79,6 +79,7 @@ class AliyunSMS():
         if (url == '/'):
             url = ''
         final_url = self._config.get('host') + '?' + '&'.join(['{}={}'.format(key, quote(val, safe='')) for key, val in self._sms_params.items()])
+        print(final_url)
         return requests.get(url=final_url)
         
     def send_sms(self, phone_numbers, sign_name, template_code, template_params=None, raw=True, **kwargs):
