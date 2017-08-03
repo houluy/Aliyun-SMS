@@ -1,10 +1,6 @@
 Aliyun SMS SDK's documentation
 ==============================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
 Installation
 ===========
 
@@ -22,6 +18,7 @@ AliyunSMS Object has the following attributes and methods::
     class aliyun_sms.AliyunSMS(config_file='', access_key_id='', access_key_secret='', region_id='', host='http://dysmsapi.aliyuncs.com')
 
 *Class*
+
 * `config_file`:        Configure file name
 * `access_key_id`:      accessKeyId of Aliyun *sub-account* (*subaccount* is recommended for security)
 * `access_key_secret`:  accessKeySecret of the id (vital)
@@ -32,14 +29,16 @@ AliyunSMS Object has the following attributes and methods::
 
 AliyunSMS Public Attributes
 ===========================
-::
+
+:: 
     AliyunSMS.sms_params
 
 This is the `dict` of parameters for SMS request. It can be get and set directly (A `dict` is mandatory)  
 
 AliyunSMS Methods
 =================
-::
+
+:: 
     AliyunSMS.generate_signature(params=None, method='GET', url='/')
 
 This function can generate signature based on the `params`, `method` and `url`. Of course `access_key_secret` is necessary!
@@ -49,7 +48,7 @@ This function can generate signature based on the `params`, `method` and `url`. 
 
 % The signature string
 
-::
+:: 
     AliyunSMS.send_sms(phone_numbers, sign_name, template_code, template_params=None, raw=True, **kwargs)
 
 This function is used to send SMS via Aliyun API.
@@ -61,11 +60,12 @@ This function is used to send SMS via Aliyun API.
 
 % Status: success or failure
 
-::
+:: 
     AliyunSMS.query_details(phone_number, serial_number='', send_date='', page_size='10', current_page='1', raw=True, **kwargs)
 
 This function is used to query sending histories specified by `phone_number` and `send_date`.
-* `phone_number1`:   Only one phone number.
+
+* `phone_number1`:   Only one phone number. 
 * `serial_number`:   Serial number of a SMS message, can be received from return of `send_sms`.
 * `send_date`:       Search date, less than 30 days, form: `20170801`.
 * `page_size`:       Paging, max 50 items a page.
@@ -76,7 +76,8 @@ This function is used to query sending histories specified by `phone_number` and
 
 Useful Functions
 ================
-::
+
+:: 
     utils.hmac64(object_str, secret, alg='sha1')
 
 Compute the *HMAC-\{alg\}* of the `object\_str` with `secret` and get the return after `base64` encoding
@@ -84,9 +85,9 @@ Compute the *HMAC-\{alg\}* of the `object\_str` with `secret` and get the return
 * `secret`:     secret string.
 * `alg`:        HMAC algorithm, default `sha1`.
 
-% The encrypted string  
+% The encrypted string
 
-::
+:: 
     utils.parse_config(config_file, part='_all')
 
 Parse config file, a *YAML* file is mandatory
@@ -95,10 +96,3 @@ Parse config file, a *YAML* file is mandatory
 
 % The configures in `dict`
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
