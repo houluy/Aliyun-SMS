@@ -46,8 +46,8 @@ AliyunSMS Methods
 This function can generate signature based on the `params`, `method` and `url`. Of course `access_key_secret` is necessary!
 
 * `params`: A `dict` parameters for the request, `OrderedDict` is better since the sequence is of importance.
-* `method`: HTTP method for the request, default `GET`.
-* `url`:    Url endpoint of the request, default is `/` if using `send_sms()`.
+* `method`: HTTP method for the request, default 'GET'.
+* `url`:    Url endpoint of the request, default is '/' if using `send_sms()`.
 
 % The signature string
 
