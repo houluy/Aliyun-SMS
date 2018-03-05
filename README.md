@@ -1,5 +1,11 @@
 # Python SDK for Aliyun SMS Services
 
+[![PyPI](https://img.shields.io/pypi/pyversions/Django.svg?style=plastic)]()
+[![CocoaPods](https://img.shields.io/cocoapods/l/AFNetworking.svg?style=plastic)]()
+[![PyPI](https://img.shields.io/pypi/status/Django.svg?style=plastic)]()
+[![](https://img.shields.io/badge/version-1.1.0-ff69b4.svg?style=plastic)]()
+[![](https://github.com/houluy/logo/blob/master/Logo.png)]()
+
 ## Installation
 The `alisms` package is available on `pypi`, so use  
 
